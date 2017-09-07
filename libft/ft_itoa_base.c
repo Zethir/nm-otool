@@ -6,7 +6,7 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/15 12:46:17 by cboussau          #+#    #+#             */
-/*   Updated: 2016/04/19 09:39:01 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/07 22:48:58 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static char		*ft_convert(int nb, char *s, int base, int i)
 {
 	int			j;
-	const char	letter[16] = "0123456789ABCDEF";
+	const char	letter[16] = "0123456789abcdef";
 
 	j = 0;
 	if (nb < 0)

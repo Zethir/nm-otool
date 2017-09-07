@@ -6,20 +6,36 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 15:30:07 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/07 19:32:44 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/07 22:40:10 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <nm.h>
 
-int		check_filetype(t_opt *opt, char *file)
+static int		check_filetype(char *file, t_opt *opt)
 {
-	printf("%s\n", file);
+	t_data		*data;
+	uint32_t	magic;
+
+	magic = *(int *)file;
+	data = NULL;
 	opt = NULL;
+	if (magic == MH_MAGIC)
+		handle_32(file, &data);
+	else if (magic == MH_MAGIC_64)
+		handle_64(file, &data);
+	else
+		return (print_msg("The file was not recognized as a valid object file."));
+	while (data)
+	{
+		printf("%s  %s\n", data->hexa, data->name);
+		data = data->next;
+	}
+	free_data(data);
 	return (0);
 }
 
-int		launch_nm(char *bin, t_opt *opt)
+static int		launch_nm(char *bin, t_opt *opt)
 {
 	int			fd;
 	struct stat stat;
@@ -35,14 +51,14 @@ int		launch_nm(char *bin, t_opt *opt)
 		return (print_msg("Can't read a directory\n"));
 	if ((file = mmap(0, stat.st_size,  PROT_READ, MAP_PRIVATE, fd, 0)) == MAP_FAILED)
 		return (print_msg("mmap() failed."));
-	if (check_filetype(opt, file) < 0)
+	if (check_filetype(file, opt) < 0)
 		return (-1);
 	if (munmap(file, stat.st_size) < 0)
 		return (print_msg("unmap() failed."));
 	return (0);
 }
 
-int		get_arg_len(t_arg *arg)
+static int		get_arg_len(t_arg *arg)
 {
 	t_arg		*tmp;
 	int			i;
@@ -57,7 +73,7 @@ int		get_arg_len(t_arg *arg)
 	return (i);
 }
 
-void	arg_loop(t_arg *arg, t_opt *opt)
+static void		arg_loop(t_arg *arg, t_opt *opt)
 {
 	int			i;
 
@@ -72,7 +88,7 @@ void	arg_loop(t_arg *arg, t_opt *opt)
 	}
 }
 
-int		main(int argc, char **argv)
+int				main(int argc, char **argv)
 {
 	t_opt		*opt;
 	t_arg		*arg;
@@ -80,7 +96,7 @@ int		main(int argc, char **argv)
 	opt = NULL;
 	arg = NULL;
 	if (argc == 1)
-		launch_nm("./a.out", NULL);
+		launch_nm("./a.out", opt);
 	else
 	{
 		if ((arg = save_options(&opt, argv)) == NULL)

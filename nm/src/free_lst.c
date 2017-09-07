@@ -6,7 +6,7 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/07 18:44:50 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/07 18:49:21 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/07 21:12:09 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,52 @@
 
 void		free_arg(t_arg *arg)
 {
-	t_arg *tmp;
+	t_arg	*tmp;
 
-	while (arg)
+	if (arg)
 	{
-		free(arg->bin);
-		tmp = arg;
-		arg = arg->next;
-		free(tmp);
+		while (arg)
+		{
+			free(arg->bin);
+			tmp = arg;
+			arg = arg->next;
+			free(tmp);
+		}
+		free(arg);
+		arg = NULL;
 	}
-	free(arg);
-	arg = NULL;
 }
 
 void		free_opt(t_opt *opt)
 {
-	t_opt *tmp;
+	t_opt	*tmp;
 
-	while (opt)
+	if (opt)
 	{
-		tmp = opt;
-		opt = opt->next;
-		free(tmp);
+		while (opt)
+		{
+			tmp = opt;
+			opt = opt->next;
+			free(tmp);
+		}
+		free(opt);
+		opt = NULL;
 	}
-	free(opt);
-	opt = NULL;
+}
+
+void		free_data(t_data *data)
+{
+	t_data	*tmp;
+
+	if (data)
+	{
+		while (data)
+		{
+			tmp = data;
+			data = data->next;
+			free(tmp);
+		}
+		free(data);
+		data = NULL;
+	}
 }
