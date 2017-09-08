@@ -17,9 +17,9 @@ char	*ft_strrcpy(char *dst, const char *src)
 	int	len_d;
 	int	len_s;
 
-	len_d = ft_strlen(dst);
-	len_s = ft_strlen(src);
-	while (len_s > 0)
+	len_d = ft_strlen(dst) - 1;
+	len_s = ft_strlen(src) - 1;
+	while (len_s >= 0)
 	{
 		dst[len_d] = src[len_s];
 		len_s--;

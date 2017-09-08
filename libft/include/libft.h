@@ -102,6 +102,8 @@ int					ft_strccmp(const char *s1, const char *s2, char c);
 char				*join_tab(char **tabl);
 char				*ft_itoa(int n);
 char				*ft_itoa_base(int value, int base);
+char				*ft_itoa_base_uns(unsigned long long value,
+					unsigned long long base);
 char				*ft_chardup(const char c);
 char				*ft_wipespace(char *str);
 char				**ft_tabdup(char **tabl);

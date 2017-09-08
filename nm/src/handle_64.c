@@ -12,7 +12,7 @@
 
 #include <nm.h>
 
-char	*get_hexa(long long value, int len)
+char	*get_hexa(unsigned long long value, int len)
 {
 	char	*hexa;
 	char	*tmp;
@@ -33,9 +33,10 @@ char	*get_hexa(long long value, int len)
 			hexa = ft_strdup("00000000");
 		else
 			hexa = ft_strdup("0000000000000000");
-		tmp = ft_itoa_base_unsigned(value, 16);
+		tmp = ft_itoa_base_uns(value, 16);
+		ft_strrcpy(hexa, tmp);
 		free(tmp);
-		return (ft_strrcpy(hexa, tmp));	
+		return (hexa);
 	}
 }
 

@@ -66,4 +66,6 @@ int					print_open_error(char *str);
 int					print_fstat_error(char *str);
 int					print_msg(char *str);
 
+char				*get_hexa(unsigned long long value, int len)
+
 #endif
