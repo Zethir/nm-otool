@@ -29,7 +29,7 @@ SRCS = ft_atoi.c ft_bzero.c ft_isalnum.c ft_isalpha.c ft_isascii.c ft_isdigit.c\
 	   ft_tablen.c get_next_line.c ft_strsplit_ws.c ft_print_tab.c\
 	   ft_strlen_char.c ft_putchar_int.c ft_chardup.c ft_strccmp.c\
 	   ft_wipespace.c ft_free_tab.c ft_strclen.c ft_strchr_int.c ft_tabdup.c \
-	   join_tab.c print_memory.c ft_strrcpy.c
+	   join_tab.c print_memory.c ft_strrcpy.c ft_itoa_base_uns.c
 
 OBJS = $(SRCS:.c=.o)
 INCLUDE = ./include/
