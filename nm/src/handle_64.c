@@ -6,7 +6,7 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/07 20:16:07 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/07 23:07:39 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/09 15:48:54 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,17 @@ void	store_data(struct symtab_command *sym, char *file, t_data **data)
 	}
 }
 
-void	segment_32()
+void	segment_32(struct segment_command_64 *sg, char *file)
 {
-	;
+	printf("cmd = %lu\n", sg->cmd);
+	printf("cmdsize = %lu\n", sg->cmdsize);
+	printf("segname[16] = %s\n", sg->segname);
+	printf("vmaddr = %lu\n", sg->vmaddr);
+	printf("vmsize = %lu\n", sg->vmsize);
+	printf("fileoff = %lu\n", sg->fileoff);
+	printf("filesize = %lu\n", sg->filesize);
+	printf("nsects = %lu\n", sg->nsects);
+	printf("flags = %lu\n", sg->flags);
 }
 
 void	handle_64(char *file, t_data **data)
@@ -80,7 +88,7 @@ void	handle_64(char *file, t_data **data)
 	while (i < ncmds)
 	{
 		if (lc->cmd == LC_SEGMENT)
-			segment_32();
+			segment_32((struct segment_command_64 *)lc, file);
 		if (lc->cmd == LC_SYMTAB)
 			store_data((struct symtab_command *)lc, file, data);
 		lc = (void *)lc + lc->cmdsize;
