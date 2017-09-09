@@ -6,7 +6,7 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/07 20:16:07 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/09 20:00:20 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/09 20:35:57 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	store_data(struct symtab_command *sym, char *file,
 	char					*stringtable;
 	int						i;
 	char					c;
-	
+
 	tmp = NULL;
 	nlist = (void *)file + sym->symoff;
 	stringtable = (void *)file + sym->stroff;
@@ -40,7 +40,7 @@ static void	store_data(struct symtab_command *sym, char *file,
 	}
 }
 
-static void	segment_64(struct segment_command_64 *sg, t_sect **sect, int *nb_sect)
+static void	segment_64(struct segment_command_64 *sg, t_sect **sect, int *nbsec)
 {
 	struct section_64	*sec;
 	t_sect				*tmp;
@@ -49,7 +49,7 @@ static void	segment_64(struct segment_command_64 *sg, t_sect **sect, int *nb_sec
 
 	i = 0;
 	sec = (struct section_64 *)((void *)sg + sizeof(struct segment_command_64));
-	nb = *nb_sect;
+	nb = *nbsec;
 	while (i < sg->nsects)
 	{
 		tmp = init_sect();

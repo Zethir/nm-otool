@@ -6,7 +6,7 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/07 21:31:42 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/09 18:21:03 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/09 20:36:31 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ char		*get_hexa(unsigned long long value, int len)
 
 static char	get_sect(t_sect *sect, int n_sect)
 {
-	t_sect *tmp;
+	t_sect	*tmp;
 	char	c;
 
 	tmp = sect;

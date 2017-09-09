@@ -6,13 +6,13 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/09 16:58:44 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/09 17:00:45 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/09 20:38:47 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <nm.h>
 
-t_sect		*init_sect()
+t_sect		*init_sect(void)
 {
 	t_sect	*sect;
 
@@ -24,7 +24,7 @@ t_sect		*init_sect()
 	return (sect);
 }
 
-void	push_sect(t_sect **head, t_sect *sect)
+void		push_sect(t_sect **head, t_sect *sect)
 {
 	t_sect	*tmp;
 

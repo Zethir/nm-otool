@@ -6,7 +6,7 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 15:11:28 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/09 19:18:55 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/09 20:39:05 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,10 @@ typedef struct		s_arg
 	struct s_arg	*next;
 }					t_arg;
 
-t_opt				*init_opt();
-t_arg				*init_arg();
-t_data				*init_data();
-t_sect				*init_sect();
+t_opt				*init_opt(void);
+t_arg				*init_arg(void);
+t_data				*init_data(void);
+t_sect				*init_sect(void);
 t_arg				*save_options(t_opt **head, char **argv);
 t_data				*sort_data(t_data *data, char c);
 

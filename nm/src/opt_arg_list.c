@@ -6,13 +6,13 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/07 18:29:22 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/07 21:32:28 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/09 20:36:48 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <nm.h>
 
-t_opt		*init_opt()
+t_opt	*init_opt(void)
 {
 	t_opt	*opt;
 
@@ -54,7 +54,7 @@ void	push_arg(t_arg **head, t_arg *arg)
 	tmp->next = arg;
 }
 
-t_arg		*init_arg()
+t_arg	*init_arg(void)
 {
 	t_arg	*arg;
 

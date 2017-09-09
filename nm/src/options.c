@@ -6,7 +6,7 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/07 16:47:48 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/07 18:55:33 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/09 20:37:21 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static void	option_loop(t_opt **head, char *options)
 		{
 			nm_error_arg(options);
 			free_opt(*head);
-			exit (-1);
+			exit(-1);
 		}
 		i++;
 	}
@@ -55,7 +55,7 @@ t_arg		*save_options(t_opt **head, char **argv)
 	while (argv[i])
 	{
 		if (argv[i][0] == '-' && argv[i][1])
-			option_loop(head, argv[i]);	
+			option_loop(head, argv[i]);
 		else
 			add_arg(&arg, argv[i]);
 		i++;

@@ -6,13 +6,13 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/07 21:31:42 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/09 18:44:24 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/09 20:33:51 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <nm.h>
 
-t_data		*init_data()
+t_data		*init_data(void)
 {
 	t_data	*data;
 
@@ -24,7 +24,7 @@ t_data		*init_data()
 	return (data);
 }
 
-void	push_data(t_data **head, t_data *data)
+void		push_data(t_data **head, t_data *data)
 {
 	t_data	*tmp;
 

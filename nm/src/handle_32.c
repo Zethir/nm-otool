@@ -6,7 +6,7 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/07 20:16:07 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/09 20:03:08 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/09 20:34:32 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	store_data(struct symtab_command *sym, char *file,
 	char					*stringtable;
 	int						i;
 	char					c;
-	
+
 	tmp = NULL;
 	nlist = (void *)file + sym->symoff;
 	stringtable = (void *)file + sym->stroff;

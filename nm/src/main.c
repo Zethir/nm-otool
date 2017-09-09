@@ -6,7 +6,7 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 15:30:07 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/09 20:22:41 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/09 20:38:27 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int		check_filetype(char *file, t_opt *opt)
 	else if (magic == MH_MAGIC_64)
 		handle_64(file, &data);
 	else
-		return (print_msg("The file was not recognized as a valid object file."));
+		return (print_msg("The file wasn't recognized as a valid object file"));
 	print_data(data, opt);
 	free_data(data);
 	return (0);
@@ -35,7 +35,7 @@ static int		launch_nm(char *bin, t_opt *opt)
 	int			fd;
 	struct stat stat;
 	char		*file;
-	
+
 	if ((fd = open(bin, O_RDONLY)) < 0)
 		return (print_open_error(bin));
 	if (fstat(fd, &stat) < 0)
@@ -44,7 +44,8 @@ static int		launch_nm(char *bin, t_opt *opt)
 		return (print_msg("File is empty\n"));
 	if ((stat.st_mode & S_IFMT) == S_IFDIR)
 		return (print_msg("Can't read a directory\n"));
-	if ((file = mmap(0, stat.st_size, PROT_READ, MAP_PRIVATE, fd, 0)) == MAP_FAILED)
+	if ((file = mmap(0, stat.st_size, PROT_READ, MAP_PRIVATE, fd, 0))
+			== MAP_FAILED)
 		return (print_msg("mmap() failed."));
 	if (check_filetype(file, opt) < 0)
 		return (-1);
