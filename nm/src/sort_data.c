@@ -6,7 +6,7 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/09 19:16:53 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/09 19:18:28 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/09 20:03:02 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ static t_data	*sort_alpha(t_data *data)
 	}
 	return (tmp);
 }
-
 
 t_data			*sort_data(t_data *data, char c)
 {

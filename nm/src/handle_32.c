@@ -5,50 +5,82 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/09/07 20:11:56 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/07 21:15:02 by cboussau         ###   ########.fr       */
+/*   Created: 2017/09/07 20:16:07 by cboussau          #+#    #+#             */
+/*   Updated: 2017/09/09 20:03:08 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <nm.h>
 
-void	print_output_32(int nsyms, int symoff, int stroff, char *file)
+void	store_data(struct symtab_command *sym, char *file,
+			t_data **data, t_sect *sect)
 {
-	int						i;
+	struct nlist			*nlist;
+	t_data					*tmp;
 	char					*stringtable;
-	struct nlist			*array;
-
-	array = (void *)file + symoff;
-	stringtable = (void *)file + stroff;
+	int						i;
+	char					c;
+	
+	tmp = NULL;
+	nlist = (void *)file + sym->symoff;
+	stringtable = (void *)file + sym->stroff;
 	i = 0;
-	while (i < nsyms)
+	while (i < (int)sym->nsyms)
 	{
-		printf("%s\n", stringtable + array[i].n_un.n_strx);
+		if ((c = get_type(nlist[i].n_type, nlist[i].n_sect,
+						nlist[i].n_value, sect)) != ' ')
+		{
+			tmp = init_data();
+			tmp->hexa = get_hexa(nlist[i].n_value, 16);
+			tmp->type = c;
+			tmp->name = ft_strdup(stringtable + nlist[i].n_un.n_strx);
+			push_data(data, tmp);
+		}
+		i++;
+	}
+}
+
+void	segment_32(struct segment_command *sg, t_sect **sect, int *nb_sect)
+{
+	struct section		*sec;
+	t_sect				*tmp;
+	unsigned int		i;
+	int					nb;
+
+	i = 0;
+	sec = (struct section *)((void *)sg + sizeof(struct segment_command));
+	nb = *nb_sect;
+	while (i < sg->nsects)
+	{
+		tmp = init_sect();
+		tmp->sectname = ft_strdup((sec + i)->sectname);
+		tmp->nb_sect = ++nb;
+		push_sect(sect, tmp);
 		i++;
 	}
 }
 
 void	handle_32(char *file, t_data **data)
 {
-	int						ncmds;
-	int						i;
 	struct mach_header		*header;
 	struct load_command		*lc;
-	struct symtab_command	*sym;
+	t_sect					*sect;
+	uint32_t				i;
+	int						nb_sect;
 
 	header = (struct mach_header *)file;
-	ncmds = header->ncmds;
 	lc = (void *)file + sizeof(*header);
+	sect = NULL;
 	i = 0;
-	data = NULL;
-	while (i < ncmds)
+	nb_sect = 0;
+	while (i < header->ncmds)
 	{
+		if (lc->cmd == LC_SEGMENT)
+			segment_32((struct segment_command *)lc, &sect, &nb_sect);
 		if (lc->cmd == LC_SYMTAB)
-		{
-			sym = (struct symtab_command *)lc;
-			print_output_32(sym->nsyms, sym->symoff, sym->stroff, file);
-		}
+			store_data((struct symtab_command *)lc, file, data, sect);
 		lc = (void *)lc + lc->cmdsize;
 		i++;
 	}
+	free_sect(sect);
 }
