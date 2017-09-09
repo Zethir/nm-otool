@@ -6,7 +6,7 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 15:30:07 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/09 15:49:40 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/09 17:42:30 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int		check_filetype(char *file, t_opt *opt)
 		return (print_msg("The file was not recognized as a valid object file."));
 	while (data)
 	{
-		printf("%s  %s\n", data->hexa, data->name);
+		printf("%s %c %s\n", data->hexa, data->type, data->name);
 		data = data->next;
 	}
 	free_data(data);
