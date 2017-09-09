@@ -6,7 +6,7 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/07 18:44:50 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/07 21:12:09 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/09 18:01:53 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,31 @@ void		free_data(t_data *data)
 	{
 		while (data)
 		{
+			free(data->hexa);
+			free(data->name);
 			tmp = data;
 			data = data->next;
 			free(tmp);
 		}
 		free(data);
 		data = NULL;
+	}
+}
+
+void		free_sect(t_sect *sect)
+{
+	t_sect	*tmp;
+
+	if (sect)
+	{
+		while (sect)
+		{
+			free(sect->sectname);
+			tmp = sect;
+			sect = sect->next;
+			free(tmp);
+		}
+		free(sect);
+		sect = NULL;
 	}
 }

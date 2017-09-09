@@ -6,7 +6,7 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 15:11:28 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/09 17:39:23 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/09 19:18:55 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 # include <mach-o/fat.h>
 # include <mach-o/ranlib.h>
 
-# define OPT "uUrgj"
+# define OPT "uUrjp"
 
 typedef struct		s_sect
 {
@@ -58,6 +58,7 @@ t_arg				*init_arg();
 t_data				*init_data();
 t_sect				*init_sect();
 t_arg				*save_options(t_opt **head, char **argv);
+t_data				*sort_data(t_data *data, char c);
 
 void				push_opt(t_opt **head, t_opt *opt);
 void				push_arg(t_arg **head, t_arg *arg);
@@ -66,9 +67,11 @@ void				push_sect(t_sect **head, t_sect *sect);
 void				free_opt(t_opt *opt);
 void				free_arg(t_arg *arg);
 void				free_data(t_data *data);
+void				free_sect(t_sect *sect);
 void				print_binary(char *bin);
 void				handle_32(char *file, t_data **data);
 void				handle_64(char *file, t_data **data);
+void				print_data(t_data *data, t_opt *opt);
 
 int					nm_error_arg(char *str);
 int					print_open_error(char *str);

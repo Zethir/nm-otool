@@ -6,7 +6,7 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/07 20:16:07 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/09 17:40:21 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/09 18:06:40 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,4 +82,5 @@ void	handle_64(char *file, t_data **data)
 		lc = (void *)lc + lc->cmdsize;
 		i++;
 	}
+	free_sect(sect);
 }

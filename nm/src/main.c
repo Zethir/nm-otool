@@ -6,7 +6,7 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 15:30:07 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/09 17:42:30 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/09 19:14:01 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,13 @@ static int		check_filetype(char *file, t_opt *opt)
 
 	magic = *(int *)file;
 	data = NULL;
-	opt = NULL;
 	if (magic == MH_MAGIC)
 		handle_32(file, &data);
 	else if (magic == MH_MAGIC_64)
 		handle_64(file, &data);
 	else
 		return (print_msg("The file was not recognized as a valid object file."));
-	while (data)
-	{
-		printf("%s %c %s\n", data->hexa, data->type, data->name);
-		data = data->next;
-	}
+	print_data(data, opt);
 	free_data(data);
 	return (0);
 }
@@ -49,7 +44,7 @@ static int		launch_nm(char *bin, t_opt *opt)
 		return (print_msg("File is empty\n"));
 	if ((stat.st_mode & S_IFMT) == S_IFDIR)
 		return (print_msg("Can't read a directory\n"));
-	if ((file = mmap(0, stat.st_size,  PROT_READ, MAP_PRIVATE, fd, 0)) == MAP_FAILED)
+	if ((file = mmap(0, stat.st_size, PROT_READ, MAP_PRIVATE, fd, 0)) == MAP_FAILED)
 		return (print_msg("mmap() failed."));
 	if (check_filetype(file, opt) < 0)
 		return (-1);
