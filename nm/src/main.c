@@ -6,7 +6,7 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 15:30:07 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/11 18:58:38 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/11 21:13:13 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,12 @@ int				check_filetype(char *file, char *bin, t_opt *opt)
 	else if (magic == MH_MAGIC_64)
 		handle_64(file, &data);
 	else if (magic == FAT_MAGIC || magic == FAT_CIGAM)
-		handle_fat(file, &data);
+		handle_fat(file, bin, opt);
 	else if (!ft_strncmp(file, ARMAG, SARMAG))
 		handle_ar(file, bin, opt);
 	else
-		return (print_msg("The file wasn't recognized as a valid object file"));
+		return (
+			print_msg("The file wasn't recognized as a valid object file\n"));
 	print_data(data, opt);
 	free_data(data);
 	return (0);

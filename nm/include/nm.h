@@ -6,7 +6,7 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 15:11:28 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/11 18:09:39 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/11 21:34:50 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@
 # include <ar.h>
 
 # define OPT "uUrjp"
+
+#define IS_SWAP(a)	(a == MH_CIGAM || a == MH_CIGAM_64 || a == FAT_CIGAM)
 
 typedef struct		s_sect
 {
@@ -73,7 +75,9 @@ void				print_binary(char *bin);
 void				handle_32(char *file, t_data **data);
 void				handle_64(char *file, t_data **data);
 void				handle_ar(char *file, char *bin, t_opt *opt);
+void				handle_fat(char *file, char *bin, t_opt *opt);
 void				print_data(t_data *data, t_opt *opt);
+void				print_obj_path(char *bin, char *ar_name);
 
 int					check_filetype(char *file, char *bin, t_opt *opt);
 int					nm_error_arg(char *str);

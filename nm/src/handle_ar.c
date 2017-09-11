@@ -6,13 +6,13 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/11 17:34:03 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/11 18:58:15 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/11 21:14:48 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <nm.h>
 
-int			ar_size(char *ar_name)
+static int	ar_size(char *ar_name)
 {
 	char	*size;
 
@@ -40,7 +40,6 @@ void		handle_ar(char *file, char *bin, t_opt *opt)
 	ar = (void *)file + SARMAG;
 	nb_obj = *((int *)((void *)ar + sizeof(struct ar_hdr) +
 				ar_size(ar->ar_name)));
-	printf("nb_obj = %d\n", nb_obj);
 	nb_obj /= sizeof(struct ranlib);
 	ranlib = (void *)ar + sizeof(struct ar_hdr) + ar_size(ar->ar_name) + 4;
 	i = 0;
