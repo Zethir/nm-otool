@@ -6,7 +6,7 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/09 18:44:31 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/09 19:58:02 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/11 16:48:24 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,7 @@ void		print_data(t_data *data, t_opt *opt)
 	data_tmp = sort_data(data, get_sort_opt(opt));
 	while (data_tmp)
 	{
-		if (ft_strcmp(data_tmp->name, "radr://5614542") &&
-				ft_strcmp(data_tmp->name, "") && data_tmp->type != 'u')
+		if (ft_strcmp(data_tmp->name, "") && data_tmp->type != 'u')
 		{
 			if (check_rules(opt, 'U') && data_tmp->type == 'U')
 				data_tmp = data_tmp->next;

@@ -6,7 +6,7 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 15:11:28 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/09 20:39:05 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/11 18:09:39 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <mach-o/nlist.h>
 # include <mach-o/fat.h>
 # include <mach-o/ranlib.h>
+# include <ar.h>
 
 # define OPT "uUrjp"
 
@@ -71,14 +72,16 @@ void				free_sect(t_sect *sect);
 void				print_binary(char *bin);
 void				handle_32(char *file, t_data **data);
 void				handle_64(char *file, t_data **data);
+void				handle_ar(char *file, char *bin, t_opt *opt);
 void				print_data(t_data *data, t_opt *opt);
 
+int					check_filetype(char *file, char *bin, t_opt *opt);
 int					nm_error_arg(char *str);
 int					print_open_error(char *str);
 int					print_fstat_error(char *str);
 int					print_msg(char *str);
 
 char				get_type(int n_type, int n_sect, int n_value, t_sect *sect);
-char				*get_hexa(unsigned long long value, int len);
+char				*get_hexa(long long value, char c, int len);
 
 #endif

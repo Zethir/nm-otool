@@ -6,7 +6,7 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 15:29:03 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/06 16:11:27 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/11 17:41:59 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <sys/stat.h>
 # include <libft.h>
 # include <fcntl.h>
+# include <ar.h>
 # include <mach-o/loader.h>
 # include <mach-o/nlist.h>
 # include <mach-o/fat.h>

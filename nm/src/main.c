@@ -6,13 +6,13 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 15:30:07 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/09 20:38:27 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/11 18:58:38 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <nm.h>
 
-static int		check_filetype(char *file, t_opt *opt)
+int				check_filetype(char *file, char *bin, t_opt *opt)
 {
 	t_data		*data;
 	uint32_t	magic;
@@ -23,6 +23,10 @@ static int		check_filetype(char *file, t_opt *opt)
 		handle_32(file, &data);
 	else if (magic == MH_MAGIC_64)
 		handle_64(file, &data);
+	else if (magic == FAT_MAGIC || magic == FAT_CIGAM)
+		handle_fat(file, &data);
+	else if (!ft_strncmp(file, ARMAG, SARMAG))
+		handle_ar(file, bin, opt);
 	else
 		return (print_msg("The file wasn't recognized as a valid object file"));
 	print_data(data, opt);
@@ -47,7 +51,7 @@ static int		launch_nm(char *bin, t_opt *opt)
 	if ((file = mmap(0, stat.st_size, PROT_READ, MAP_PRIVATE, fd, 0))
 			== MAP_FAILED)
 		return (print_msg("mmap() failed."));
-	if (check_filetype(file, opt) < 0)
+	if (check_filetype(file, bin, opt) < 0)
 		return (-1);
 	if (munmap(file, stat.st_size) < 0)
 		return (print_msg("unmap() failed."));

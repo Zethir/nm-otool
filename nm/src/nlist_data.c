@@ -6,20 +6,20 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/07 21:31:42 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/09 20:36:31 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/11 16:40:45 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <nm.h>
 
-char		*get_hexa(unsigned long long value, int len)
+char		*get_hexa(long long value, char c, int len)
 {
 	char	*hexa;
 	char	*tmp;
 
 	hexa = NULL;
 	tmp = NULL;
-	if (value == 0)
+	if (c == 'U')
 	{
 		if (len == 8)
 			hexa = ft_strdup("        ");

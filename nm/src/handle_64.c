@@ -6,7 +6,7 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/07 20:16:07 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/09 20:35:57 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/11 16:47:10 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,11 @@ static void	store_data(struct symtab_command *sym, char *file,
 	while (i < (int)sym->nsyms)
 	{
 		if ((c = get_type(nlist[i].n_type, nlist[i].n_sect,
-						nlist[i].n_value, sect)) != ' ')
+			nlist[i].n_value, sect)) != ' ' &&
+				ft_strcmp(stringtable + nlist[i].n_un.n_strx, "radr://5614542"))
 		{
 			tmp = init_data();
-			tmp->hexa = get_hexa(nlist[i].n_value, 16);
+			tmp->hexa = get_hexa(nlist[i].n_value, c, 16);
 			tmp->type = c;
 			tmp->name = ft_strdup(stringtable + nlist[i].n_un.n_strx);
 			push_data(data, tmp);
