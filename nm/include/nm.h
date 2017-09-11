@@ -6,7 +6,7 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 15:11:28 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/11 21:34:50 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/11 22:08:05 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@
 # include <ar.h>
 
 # define OPT "uUrjp"
-
-#define IS_SWAP(a)	(a == MH_CIGAM || a == MH_CIGAM_64 || a == FAT_CIGAM)
 
 typedef struct		s_sect
 {
