@@ -6,15 +6,15 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/11 19:31:41 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/12 17:45:36 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/12 17:44:26 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <nm.h>
+#include <otool.h>
 
 static uint32_t	swap_uint32(uint32_t num)
 {
-	uint32_t	swapped;
+	uint32_t			swapped;
 
 	swapped = ((num >> 24) & 0x000000FF) |
 		((num << 8) & 0x00FF0000) |
@@ -45,7 +45,7 @@ char			*get_cpu_type(int cpu_type)
 		return (NULL);
 }
 
-void			handle_fat(char *file, char *bin, t_opt *opt)
+void			handle_fat(char *file, char *bin)
 {
 	struct fat_header	*header;
 	struct fat_arch		*arch;
@@ -60,7 +60,7 @@ void			handle_fat(char *file, char *bin, t_opt *opt)
 		if ((cputype = get_cpu_type(swap_uint32(arch[i].cputype))))
 		{
 			print_obj_path(bin, cputype);
-			check_filetype(file + swap_uint32(arch[i].offset), bin, opt);
+			check_filetype(file + swap_uint32(arch[i].offset), bin);
 		}
 		i++;
 	}

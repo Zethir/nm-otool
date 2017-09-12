@@ -6,7 +6,7 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 15:30:07 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/11 21:13:13 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/12 17:45:00 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,10 @@ int				check_filetype(char *file, char *bin, t_opt *opt)
 	else if (!ft_strncmp(file, ARMAG, SARMAG))
 		handle_ar(file, bin, opt);
 	else
+	{
 		return (
 			print_msg("The file wasn't recognized as a valid object file\n"));
+	}
 	print_data(data, opt);
 	free_data(data);
 	return (0);
