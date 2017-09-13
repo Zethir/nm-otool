@@ -6,7 +6,7 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/11 19:31:41 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/12 17:44:26 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/13 15:21:55 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,23 @@ static uint32_t	swap_uint32(uint32_t num)
 	return (swapped);
 }
 
+static void		print_arch(char *bin, char *ar_name)
+{
+	ft_putchar('\n');
+	ft_putstr(bin);
+	ft_putstr(" (for architecture ");
+	ft_putstr(ar_name);
+	ft_putstr("):\n");
+}
+
 char			*get_cpu_type(int cpu_type)
 {
 	if (cpu_type == CPU_TYPE_MC680x0)
 		return ("m68k");
-	else if (cpu_type == CPU_TYPE_X86)
-		return ("x86");
 	else if (cpu_type == CPU_TYPE_I386)
 		return ("i386");
+	else if (cpu_type == CPU_TYPE_X86)
+		return ("x86");
 	else if (cpu_type == CPU_TYPE_X86_64)
 		return ("x86_64");
 	else if (cpu_type == CPU_TYPE_ARM)
@@ -59,7 +68,7 @@ void			handle_fat(char *file, char *bin)
 	{
 		if ((cputype = get_cpu_type(swap_uint32(arch[i].cputype))))
 		{
-			print_obj_path(bin, cputype);
+			print_arch(bin, cputype);
 			check_filetype(file + swap_uint32(arch[i].offset), bin);
 		}
 		i++;
