@@ -6,25 +6,25 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 15:30:07 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/12 17:44:49 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/17 15:46:04 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <otool.h>
 
-int				check_filetype(char *file, char *bin)
+int				check_filetype(char *file, char *bin, void *end)
 {
 	uint32_t	magic;
 
 	magic = *(int *)file;
 	if (magic == MH_MAGIC)
-		handle_32(file);
+		handle_32(file, end);
 	else if (magic == MH_MAGIC_64)
-		handle_64(file);
+		handle_64(file, end);
 	else if (magic == FAT_MAGIC || magic == FAT_CIGAM)
-		handle_fat(file, bin);
+		handle_fat(file, bin, end);
 	else if (!ft_strncmp(file, ARMAG, SARMAG))
-		handle_ar(file, bin);
+		handle_ar(file, bin, end);
 	else
 	{
 		return (
@@ -50,7 +50,7 @@ static int		launch_otool(char *bin)
 	if ((file = mmap(0, stat.st_size, PROT_READ, MAP_PRIVATE, fd, 0))
 			== MAP_FAILED)
 		return (print_msg("mmap() failed."));
-	if (check_filetype(file, bin) < 0)
+	if (check_filetype(file, bin, file + stat.st_size) < 0)
 		return (-1);
 	if (munmap(file, stat.st_size) < 0)
 		return (print_msg("unmap() failed."));

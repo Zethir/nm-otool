@@ -6,7 +6,7 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/07 20:16:07 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/13 18:46:26 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/17 16:03:51 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static void	segment_64(struct segment_command_64 *sg, t_sect **sect, int *nbsec)
 	}
 }
 
-void		handle_64(char *file, t_data **data)
+void		handle_64(char *file, t_data **data, void *end)
 {
 	struct mach_header_64	*header;
 	struct load_command		*lc;
@@ -74,14 +74,18 @@ void		handle_64(char *file, t_data **data)
 	sect = NULL;
 	i = 0;
 	nb_sect = 0;
-	while (i < header->ncmds)
+	while (i++ < header->ncmds)
 	{
+		if (lc > (struct load_command *)end)
+		{
+			print_msg("The file wasn't recognized as a valid object file\n");
+			exit(-1);
+		}
 		if (lc->cmd == LC_SEGMENT_64)
 			segment_64((struct segment_command_64 *)lc, &sect, &nb_sect);
 		if (lc->cmd == LC_SYMTAB)
 			store_data((struct symtab_command *)lc, file, data, sect);
 		lc = (void *)lc + lc->cmdsize;
-		i++;
 	}
 	free_sect(sect);
 }

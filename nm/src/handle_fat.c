@@ -6,7 +6,7 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/11 19:31:41 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/13 15:05:53 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/17 15:35:02 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ char			*get_cpu_type(int cpu_type)
 		return (NULL);
 }
 
-void			handle_fat(char *file, char *bin, t_opt *opt)
+void			handle_fat(char *file, char *bin, t_opt *opt, void *end)
 {
 	struct fat_header	*header;
 	struct fat_arch		*arch;
@@ -69,7 +69,7 @@ void			handle_fat(char *file, char *bin, t_opt *opt)
 		if ((cputype = get_cpu_type(swap_uint32(arch[i].cputype))))
 		{
 			print_arch(bin, cputype);
-			check_filetype(file + swap_uint32(arch[i].offset), bin, opt);
+			check_filetype(file + swap_uint32(arch[i].offset), bin, opt, end);
 		}
 		i++;
 	}

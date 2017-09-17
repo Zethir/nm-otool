@@ -6,7 +6,7 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 15:11:28 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/11 22:08:05 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/17 15:35:48 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,14 +70,14 @@ void				free_arg(t_arg *arg);
 void				free_data(t_data *data);
 void				free_sect(t_sect *sect);
 void				print_binary(char *bin);
-void				handle_32(char *file, t_data **data);
-void				handle_64(char *file, t_data **data);
-void				handle_ar(char *file, char *bin, t_opt *opt);
-void				handle_fat(char *file, char *bin, t_opt *opt);
+void				handle_32(char *file, t_data **data, void *end);
+void				handle_64(char *file, t_data **data, void *end);
+void				handle_ar(char *file, char *bin, t_opt *opt, void *end);
+void				handle_fat(char *file, char *bin, t_opt *opt, void *end);
 void				print_data(t_data *data, t_opt *opt);
 void				print_obj_path(char *bin, char *ar_name);
 
-int					check_filetype(char *file, char *bin, t_opt *opt);
+int					check_filetype(char *file, char *bin, t_opt *opt, void *e);
 int					nm_error_arg(char *str);
 int					print_open_error(char *str);
 int					print_fstat_error(char *str);

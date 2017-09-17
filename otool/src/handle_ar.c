@@ -6,7 +6,7 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/11 17:34:03 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/12 17:38:01 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/17 15:46:52 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void		print_obj_path(char *bin, char *ar_name)
 	ft_putstr("):\n");
 }
 
-void		handle_ar(char *file, char *bin)
+void		handle_ar(char *file, char *bin, void *end)
 {
 	struct ar_hdr	*ar;
 	struct ranlib	*ranlib;
@@ -47,7 +47,7 @@ void		handle_ar(char *file, char *bin)
 		ar = (void *)file + ranlib[i].ran_off;
 		obj = (void *)ar + sizeof(struct ar_hdr) + ar_size(ar->ar_name);
 		print_obj_path(bin, ar->ar_name + sizeof(struct ar_hdr));
-		check_filetype(obj, bin);
+		check_filetype(obj, bin, end);
 		i++;
 	}
 }

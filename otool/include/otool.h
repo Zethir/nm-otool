@@ -6,7 +6,7 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 15:11:28 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/12 17:42:45 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/17 15:49:00 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,15 @@
 # include <ar.h>
 
 void				print_binary(char *bin);
-void				handle_32(char *file);
-void				handle_64(char *file);
-void				handle_ar(char *file, char *bin);
-void				handle_fat(char *file, char *bin);
+void				handle_32(char *file, void *end);
+void				handle_64(char *file, void *end);
+void				handle_ar(char *file, char *bin, void *end);
+void				handle_fat(char *file, char *bin, void *end);
 void				print_obj_path(char *bin, char *ar_name);
 void				print_hexa(long long value, int len);
 void				print_2_hexa(long long value);
 
-int					check_filetype(char *file, char *bin);
+int					check_filetype(char *file, char *bin, void *end);
 int					nm_error_arg(char *str);
 int					print_open_error(char *str);
 int					print_fstat_error(char *str);

@@ -6,7 +6,7 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/12 16:54:34 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/12 17:43:43 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/17 15:53:45 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ static void	segment_64(struct segment_command_64 *sg, char *file)
 	}
 }
 
-void		handle_64(char *file)
+void		handle_64(char *file, void *end)
 {
 	struct mach_header_64	*header;
 	struct load_command		*lc;
@@ -82,6 +82,11 @@ void		handle_64(char *file)
 	i = 0;
 	while (i < header->ncmds)
 	{
+		if (lc > (struct load_command *)end)
+		{
+			print_msg("The file wasn't recognized as a valid object file\n");
+			exit(-1);
+		}
 		if (lc->cmd == LC_SEGMENT_64)
 			segment_64((struct segment_command_64 *)lc, file);
 		lc = (void *)lc + lc->cmdsize;

@@ -6,7 +6,7 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/07 20:16:07 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/13 14:51:04 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/17 16:02:00 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	segment_32(struct segment_command *sg, t_sect **sect, int *nb_sect)
 	}
 }
 
-void	handle_32(char *file, t_data **data)
+void	handle_32(char *file, t_data **data, void *end)
 {
 	struct mach_header		*header;
 	struct load_command		*lc;
@@ -73,14 +73,18 @@ void	handle_32(char *file, t_data **data)
 	sect = NULL;
 	i = 0;
 	nb_sect = 0;
-	while (i < header->ncmds)
+	while (i++ < header->ncmds)
 	{
+		if (lc > (struct load_command *)end)
+		{
+			print_msg("The file wasn't recognized as a valid object file\n");
+			exit(-1);
+		}
 		if (lc->cmd == LC_SEGMENT)
 			segment_32((struct segment_command *)lc, &sect, &nb_sect);
 		if (lc->cmd == LC_SYMTAB)
 			store_data((struct symtab_command *)lc, file, data, sect);
 		lc = (void *)lc + lc->cmdsize;
-		i++;
 	}
 	free_sect(sect);
 }
