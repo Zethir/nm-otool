@@ -6,38 +6,37 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 15:30:07 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/17 15:42:35 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/19 18:16:04 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <nm.h>
 
-int				check_filetype(char *file, char *bin, t_opt *opt, void *end)
+int				check_filetype(char *file, char *bin, t_hub *hub, void *end)
 {
-	t_data		*data;
 	uint32_t	magic;
 
 	magic = *(int *)file;
-	data = NULL;
 	if (magic == MH_MAGIC)
-		handle_32(file, &data, end);
+		handle_32(file, hub, end);
 	else if (magic == MH_MAGIC_64)
-		handle_64(file, &data, end);
+		handle_64(file, hub, end);
 	else if (magic == FAT_MAGIC || magic == FAT_CIGAM)
-		handle_fat(file, bin, opt, end);
+		handle_fat(file, bin, hub, end);
 	else if (!ft_strncmp(file, ARMAG, SARMAG))
-		handle_ar(file, bin, opt, end);
+		handle_ar(file, bin, hub, end);
 	else
 	{
 		return (
 			print_msg("The file wasn't recognized as a valid object file\n"));
 	}
-	print_data(data, opt);
-	free_data(data);
+	print_data(hub->data, hub->opt);
+	free_data(hub->data);
+	hub->data = NULL;
 	return (0);
 }
 
-static int		launch_nm(char *bin, t_opt *opt)
+static int		launch_nm(char *bin, t_hub *hub)
 {
 	int			fd;
 	struct stat stat;
@@ -54,7 +53,7 @@ static int		launch_nm(char *bin, t_opt *opt)
 	if ((file = mmap(0, stat.st_size, PROT_READ, MAP_PRIVATE, fd, 0))
 			== MAP_FAILED)
 		return (print_msg("mmap() failed."));
-	if (check_filetype(file, bin, opt, file + stat.st_size) < 0)
+	if (check_filetype(file, bin, hub, file + stat.st_size) < 0)
 		return (-1);
 	if (munmap(file, stat.st_size) < 0)
 		return (print_msg("unmap() failed."));
@@ -76,7 +75,7 @@ static int		get_arg_len(t_arg *arg)
 	return (i);
 }
 
-static void		arg_loop(t_arg *arg, t_opt *opt)
+static void		arg_loop(t_arg *arg, t_hub *hub)
 {
 	int			i;
 
@@ -85,7 +84,7 @@ static void		arg_loop(t_arg *arg, t_opt *opt)
 	{
 		if (i > 1)
 			print_binary(arg->bin);
-		if (launch_nm(arg->bin, opt) < 0)
+		if (launch_nm(arg->bin, hub) < 0)
 			return ;
 		arg = arg->next;
 	}
@@ -93,21 +92,25 @@ static void		arg_loop(t_arg *arg, t_opt *opt)
 
 int				main(int argc, char **argv)
 {
-	t_opt		*opt;
+	t_hub		*hub;
 	t_arg		*arg;
 
-	opt = NULL;
 	arg = NULL;
+	if (!(hub = (t_hub *)malloc(sizeof(t_hub))))
+		return (-1);
+	hub->opt = NULL;
+	hub->data = NULL;
 	if (argc == 1)
-		launch_nm("./a.out", opt);
+		launch_nm("./a.out", hub);
 	else
 	{
-		if ((arg = save_options(&opt, argv)) == NULL)
-			launch_nm("./a.out", opt);
+		if ((arg = save_options(&hub->opt, argv)) == NULL)
+			launch_nm("./a.out", hub);
 		else
-			arg_loop(arg, opt);
+			arg_loop(arg, hub);
 		free_arg(arg);
-		free_opt(opt);
+		free_opt(hub->opt);
+		free(hub);
 	}
 	return (0);
 }

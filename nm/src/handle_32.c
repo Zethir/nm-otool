@@ -6,14 +6,14 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/07 20:16:07 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/17 16:02:00 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/19 18:18:44 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <nm.h>
 
-void	store_data(struct symtab_command *sym, char *file,
-			t_data **data, t_sect *sect)
+static void	store_data(struct symtab_command *sym, char *file,
+			t_hub *hub, t_sect *sect)
 {
 	struct nlist			*nlist;
 	t_data					*tmp;
@@ -34,13 +34,13 @@ void	store_data(struct symtab_command *sym, char *file,
 			tmp->hexa = get_hexa(nlist[i].n_value, c, 8);
 			tmp->type = c;
 			tmp->name = ft_strdup(stringtable + nlist[i].n_un.n_strx);
-			push_data(data, tmp);
+			push_data(&hub->data, tmp, hub->opt);
 		}
 		i++;
 	}
 }
 
-void	segment_32(struct segment_command *sg, t_sect **sect, int *nb_sect)
+static void	segment_32(struct segment_command *sg, t_sect **sect, int *nb_sect)
 {
 	struct section		*sec;
 	t_sect				*tmp;
@@ -58,9 +58,10 @@ void	segment_32(struct segment_command *sg, t_sect **sect, int *nb_sect)
 		push_sect(sect, tmp);
 		i++;
 	}
+	*nb_sect = nb;
 }
 
-void	handle_32(char *file, t_data **data, void *end)
+void		handle_32(char *file, t_hub *hub, void *end)
 {
 	struct mach_header		*header;
 	struct load_command		*lc;
@@ -83,7 +84,7 @@ void	handle_32(char *file, t_data **data, void *end)
 		if (lc->cmd == LC_SEGMENT)
 			segment_32((struct segment_command *)lc, &sect, &nb_sect);
 		if (lc->cmd == LC_SYMTAB)
-			store_data((struct symtab_command *)lc, file, data, sect);
+			store_data((struct symtab_command *)lc, file, hub, sect);
 		lc = (void *)lc + lc->cmdsize;
 	}
 	free_sect(sect);

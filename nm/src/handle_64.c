@@ -6,14 +6,14 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/07 20:16:07 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/17 16:03:51 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/19 17:56:09 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <nm.h>
 
 static void	store_data(struct symtab_command *sym, char *file,
-			t_data **data, t_sect *sect)
+			t_hub *hub, t_sect *sect)
 {
 	struct nlist_64			*nlist;
 	t_data					*tmp;
@@ -35,7 +35,7 @@ static void	store_data(struct symtab_command *sym, char *file,
 			tmp->hexa = get_hexa(nlist[i].n_value, c, 16);
 			tmp->type = c;
 			tmp->name = ft_strdup(stringtable + nlist[i].n_un.n_strx);
-			push_data(data, tmp);
+			push_data(&hub->data, tmp, hub->opt);
 		}
 		i++;
 	}
@@ -59,9 +59,10 @@ static void	segment_64(struct segment_command_64 *sg, t_sect **sect, int *nbsec)
 		push_sect(sect, tmp);
 		i++;
 	}
+	*nbsec = nb;
 }
 
-void		handle_64(char *file, t_data **data, void *end)
+void		handle_64(char *file, t_hub *hub, void *end)
 {
 	struct mach_header_64	*header;
 	struct load_command		*lc;
@@ -84,7 +85,7 @@ void		handle_64(char *file, t_data **data, void *end)
 		if (lc->cmd == LC_SEGMENT_64)
 			segment_64((struct segment_command_64 *)lc, &sect, &nb_sect);
 		if (lc->cmd == LC_SYMTAB)
-			store_data((struct symtab_command *)lc, file, data, sect);
+			store_data((struct symtab_command *)lc, file, hub, sect);
 		lc = (void *)lc + lc->cmdsize;
 	}
 	free_sect(sect);
