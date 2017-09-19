@@ -6,7 +6,7 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 15:11:28 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/19 18:12:55 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/19 19:07:16 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef struct		s_arg
 
 typedef struct		s_hub
 {
+	void			*end;
 	struct s_data	*data;
 	struct s_opt	*opt;
 }					t_hub;
@@ -75,14 +76,15 @@ void				free_arg(t_arg *arg);
 void				free_data(t_data *data);
 void				free_sect(t_sect *sect);
 void				print_binary(char *bin);
-void				handle_32(char *file, t_hub *hub, void *end);
-void				handle_64(char *file, t_hub *hub, void *end);
-void				handle_ar(char *file, char *bin, t_hub *hub, void *end);
-void				handle_fat(char *file, char *bin, t_hub *hub, void *end);
+void				handle_32(char *file, t_hub *hub);
+void				handle_64(char *file, t_hub *hub);
+void				handle_ar(char *file, char *bin, t_hub *hub);
+void				handle_fat(char *file, char *bin, t_hub *hub);
 void				print_data(t_data *data, t_opt *opt);
 void				print_obj_path(char *bin, char *ar_name);
+void				print_error_file(void);
 
-int					check_filetype(char *file, char *bin, t_hub *hub, void *e);
+int					check_filetype(char *file, char *bin, t_hub *hub);
 int					nm_error_arg(char *str);
 int					print_open_error(char *str);
 int					print_fstat_error(char *str);

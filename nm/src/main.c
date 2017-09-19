@@ -6,25 +6,25 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 15:30:07 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/19 18:16:04 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/19 19:06:47 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <nm.h>
 
-int				check_filetype(char *file, char *bin, t_hub *hub, void *end)
+int				check_filetype(char *file, char *bin, t_hub *hub)
 {
 	uint32_t	magic;
 
 	magic = *(int *)file;
 	if (magic == MH_MAGIC)
-		handle_32(file, hub, end);
+		handle_32(file, hub);
 	else if (magic == MH_MAGIC_64)
-		handle_64(file, hub, end);
+		handle_64(file, hub);
 	else if (magic == FAT_MAGIC || magic == FAT_CIGAM)
-		handle_fat(file, bin, hub, end);
+		handle_fat(file, bin, hub);
 	else if (!ft_strncmp(file, ARMAG, SARMAG))
-		handle_ar(file, bin, hub, end);
+		handle_ar(file, bin, hub);
 	else
 	{
 		return (
@@ -38,9 +38,9 @@ int				check_filetype(char *file, char *bin, t_hub *hub, void *end)
 
 static int		launch_nm(char *bin, t_hub *hub)
 {
+	char		*file;
 	int			fd;
 	struct stat stat;
-	char		*file;
 
 	if ((fd = open(bin, O_RDONLY)) < 0)
 		return (print_open_error(bin));
@@ -53,7 +53,8 @@ static int		launch_nm(char *bin, t_hub *hub)
 	if ((file = mmap(0, stat.st_size, PROT_READ, MAP_PRIVATE, fd, 0))
 			== MAP_FAILED)
 		return (print_msg("mmap() failed."));
-	if (check_filetype(file, bin, hub, file + stat.st_size) < 0)
+	hub->end = file + stat.st_size;
+	if (check_filetype(file, bin, hub) < 0)
 		return (-1);
 	if (munmap(file, stat.st_size) < 0)
 		return (print_msg("unmap() failed."));

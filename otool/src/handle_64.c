@@ -6,7 +6,7 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/12 16:54:34 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/17 15:53:45 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/19 19:30:46 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static void	display_section_64(struct section_64 *sec, char *file)
 	}
 }
 
-static void	segment_64(struct segment_command_64 *sg, char *file)
+static void	segment_64(struct segment_command_64 *sg, char *file, void *end)
 {
 	struct section_64	*sec;
 	unsigned int		i;
@@ -88,7 +88,7 @@ void		handle_64(char *file, void *end)
 			exit(-1);
 		}
 		if (lc->cmd == LC_SEGMENT_64)
-			segment_64((struct segment_command_64 *)lc, file);
+			segment_64((struct segment_command_64 *)lc, file, end);
 		lc = (void *)lc + lc->cmdsize;
 		i++;
 	}

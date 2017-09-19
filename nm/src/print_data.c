@@ -6,11 +6,17 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/09 18:44:31 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/19 18:04:30 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/19 18:35:45 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <nm.h>
+
+void		print_error_file(void)
+{
+	print_msg("The file wasn't recognized as a valid object file\n");
+	exit(-1);
+}
 
 char		get_sort_opt(t_opt *opt)
 {

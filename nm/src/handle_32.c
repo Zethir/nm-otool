@@ -6,41 +6,52 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/07 20:16:07 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/19 18:18:44 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/19 19:23:49 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <nm.h>
 
+static void	add_node_32(int n_value, char *str, t_hub *hub, char c)
+{
+	t_data	*tmp;
+
+	tmp = init_data();
+	tmp->hexa = get_hexa(n_value, c, 8);
+	tmp->type = c;
+	tmp->name = ft_strdup(str);
+	push_data(&hub->data, tmp, hub->opt);
+}
+
 static void	store_data(struct symtab_command *sym, char *file,
 			t_hub *hub, t_sect *sect)
 {
 	struct nlist			*nlist;
-	t_data					*tmp;
 	char					*stringtable;
 	int						i;
 	char					c;
 
-	tmp = NULL;
 	nlist = (void *)file + sym->symoff;
+	if (nlist > (struct nlist *)hub->end)
+		print_error_file();
 	stringtable = (void *)file + sym->stroff;
 	i = 0;
 	while (i < (int)sym->nsyms)
 	{
+		if ((void *)stringtable + nlist[i].n_un.n_strx > hub->end)
+			print_error_file();
 		if ((c = get_type(nlist[i].n_type, nlist[i].n_sect,
 						nlist[i].n_value, sect)) != ' ')
 		{
-			tmp = init_data();
-			tmp->hexa = get_hexa(nlist[i].n_value, c, 8);
-			tmp->type = c;
-			tmp->name = ft_strdup(stringtable + nlist[i].n_un.n_strx);
-			push_data(&hub->data, tmp, hub->opt);
+			add_node_32(nlist[i].n_value, stringtable + nlist[i].n_un.n_strx,
+					hub, c);
 		}
 		i++;
 	}
 }
 
-static void	segment_32(struct segment_command *sg, t_sect **sect, int *nb_sect)
+static void	segment_32(struct segment_command *sg, t_sect **sect, int *nb_sect,
+		t_hub *hub)
 {
 	struct section		*sec;
 	t_sect				*tmp;
@@ -49,6 +60,8 @@ static void	segment_32(struct segment_command *sg, t_sect **sect, int *nb_sect)
 
 	i = 0;
 	sec = (struct section *)((void *)sg + sizeof(struct segment_command));
+	if (sec > (struct section *)hub->end)
+		print_error_file();
 	nb = *nb_sect;
 	while (i < sg->nsects)
 	{
@@ -61,7 +74,7 @@ static void	segment_32(struct segment_command *sg, t_sect **sect, int *nb_sect)
 	*nb_sect = nb;
 }
 
-void		handle_32(char *file, t_hub *hub, void *end)
+void		handle_32(char *file, t_hub *hub)
 {
 	struct mach_header		*header;
 	struct load_command		*lc;
@@ -76,13 +89,10 @@ void		handle_32(char *file, t_hub *hub, void *end)
 	nb_sect = 0;
 	while (i++ < header->ncmds)
 	{
-		if (lc > (struct load_command *)end)
-		{
-			print_msg("The file wasn't recognized as a valid object file\n");
-			exit(-1);
-		}
+		if (lc > (struct load_command *)hub->end)
+			print_error_file();
 		if (lc->cmd == LC_SEGMENT)
-			segment_32((struct segment_command *)lc, &sect, &nb_sect);
+			segment_32((struct segment_command *)lc, &sect, &nb_sect, hub);
 		if (lc->cmd == LC_SYMTAB)
 			store_data((struct symtab_command *)lc, file, hub, sect);
 		lc = (void *)lc + lc->cmdsize;
