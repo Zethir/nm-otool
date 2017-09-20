@@ -6,18 +6,18 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/07 20:16:07 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/19 19:22:46 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/20 16:13:26 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <nm.h>
 
-static void	add_node_64(int n_value, char *str, t_hub *hub, char c)
+static void	add_node_64(unsigned long n_value, char *str, t_hub *hub, char c)
 {
 	t_data	*tmp;
 
 	tmp = init_data();
-	tmp->hexa = get_hexa(n_value, c, 8);
+	tmp->hexa = get_hexa(n_value, c, 16);
 	tmp->type = c;
 	tmp->name = ft_strdup(str);
 	push_data(&hub->data, tmp, hub->opt);

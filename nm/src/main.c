@@ -6,7 +6,7 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 15:30:07 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/19 19:06:47 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/20 16:36:14 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,14 @@ static int		launch_nm(char *bin, t_hub *hub)
 		return (print_msg("Can't read a directory\n"));
 	if ((file = mmap(0, stat.st_size, PROT_READ, MAP_PRIVATE, fd, 0))
 			== MAP_FAILED)
-		return (print_msg("mmap() failed."));
+		return (print_msg("Can't MMAP on this fd\n"));
 	hub->end = file + stat.st_size;
 	if (check_filetype(file, bin, hub) < 0)
 		return (-1);
 	if (munmap(file, stat.st_size) < 0)
-		return (print_msg("unmap() failed."));
+		return (print_msg("Can't MUNMAP this page\n"));
+	if (close(fd) < 0)
+		return (print_msg("Can't close this file descriptor\n"));
 	return (0);
 }
 

@@ -6,13 +6,13 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/07 20:16:07 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/19 19:23:49 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/20 16:13:55 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <nm.h>
 
-static void	add_node_32(int n_value, char *str, t_hub *hub, char c)
+static void	add_node_32(unsigned long n_value, char *str, t_hub *hub, char c)
 {
 	t_data	*tmp;
 
