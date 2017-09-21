@@ -6,7 +6,7 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/07 20:16:07 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/20 16:13:26 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/21 18:43:32 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,25 +27,26 @@ static void	store_data(struct symtab_command *sym, char *file,
 			t_hub *hub, t_sect *sect)
 {
 	struct nlist_64			*nlist;
-	char					*stringtable;
-	int						i;
+	char					*str;
+	uint32_t				i;
 	char					c;
 
-	nlist = (void *)file + sym->symoff;
-	if (nlist > (struct nlist_64 *)hub->end)
+	nlist = (void *)file + is_swap_64_32(hub, sym->symoff);
+	if ((uint32_t)nlist > is_swap_64_32(hub, (uint32_t)hub->end))
 		print_error_file();
-	stringtable = (void *)file + sym->stroff;
+	str = (void *)file + is_swap_64_32(hub, sym->stroff);
 	i = 0;
-	while (i < (int)sym->nsyms)
+	while (i < is_swap_64_32(hub, sym->nsyms))
 	{
-		if ((void *)stringtable + nlist[i].n_un.n_strx > hub->end)
+		if ((void *)str + is_swap_64_32(hub, nlist[i].n_un.n_strx) > hub->end)
 			print_error_file();
 		if ((c = get_type(nlist[i].n_type, nlist[i].n_sect,
-			nlist[i].n_value, sect)) != ' ' &&
-				ft_strcmp(stringtable + nlist[i].n_un.n_strx, "radr://5614542"))
+			is_swap_64_64(hub, nlist[i].n_value), sect)) != ' ' &&
+			ft_strcmp(str + is_swap_64_32(hub, nlist[i].n_un.n_strx),
+				"radr://5614542"))
 		{
-			add_node_64(nlist[i].n_value, stringtable + nlist[i].n_un.n_strx,
-					hub, c);
+			add_node_64(is_swap_64_64(hub, nlist[i].n_value), str +
+					is_swap_64_32(hub, nlist[i].n_un.n_strx), hub, c);
 		}
 		i++;
 	}
@@ -61,7 +62,7 @@ static void	segment_64(struct segment_command_64 *sg, t_sect **sect, int *nbsec,
 
 	i = 0;
 	sec = (struct section_64 *)((void *)sg + sizeof(struct segment_command_64));
-	if (sec > (struct section_64 *)hub->end)
+	if ((uint32_t)sec > is_swap_64_32(hub, (uint32_t)hub->end))
 		print_error_file();
 	nb = *nbsec;
 	while (i < sg->nsects)
@@ -88,15 +89,15 @@ void		handle_64(char *file, t_hub *hub)
 	sect = NULL;
 	i = 0;
 	nb_sect = 0;
-	while (i++ < header->ncmds)
+	while (i++ < is_swap_64_32(hub, header->ncmds))
 	{
-		if (lc > (struct load_command *)hub->end)
+		if ((uint32_t)lc > is_swap_64_32(hub, (uint32_t)hub->end))
 			print_error_file();
-		if (lc->cmd == LC_SEGMENT_64)
+		if (is_swap_64_32(hub, lc->cmd) == LC_SEGMENT_64)
 			segment_64((struct segment_command_64 *)lc, &sect, &nb_sect, hub);
-		if (lc->cmd == LC_SYMTAB)
+		if (is_swap_64_32(hub, lc->cmd) == LC_SYMTAB)
 			store_data((struct symtab_command *)lc, file, hub, sect);
-		lc = (void *)lc + lc->cmdsize;
+		lc = (void *)lc + is_swap_64_32(hub, lc->cmdsize);
 	}
 	free_sect(sect);
 }

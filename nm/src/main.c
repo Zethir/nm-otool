@@ -6,7 +6,7 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 15:30:07 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/20 16:36:14 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/21 15:38:16 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,12 @@
 
 int				check_filetype(char *file, char *bin, t_hub *hub)
 {
-	uint32_t	magic;
-
-	magic = *(int *)file;
-	if (magic == MH_MAGIC)
+	hub->magic = *(int *)file;
+	if (hub->magic == MH_MAGIC || hub->magic == MH_CIGAM)
 		handle_32(file, hub);
-	else if (magic == MH_MAGIC_64)
+	else if (hub->magic == MH_MAGIC_64 || hub->magic == MH_CIGAM_64)
 		handle_64(file, hub);
-	else if (magic == FAT_MAGIC || magic == FAT_CIGAM)
+	else if (hub->magic == FAT_MAGIC || hub->magic == FAT_CIGAM)
 		handle_fat(file, bin, hub);
 	else if (!ft_strncmp(file, ARMAG, SARMAG))
 		handle_ar(file, bin, hub);

@@ -6,7 +6,7 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 15:11:28 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/19 19:07:16 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/21 18:50:11 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ typedef struct		s_arg
 typedef struct		s_hub
 {
 	void			*end;
+	uint32_t		magic;
 	struct s_data	*data;
 	struct s_opt	*opt;
 }					t_hub;
@@ -89,6 +90,12 @@ int					nm_error_arg(char *str);
 int					print_open_error(char *str);
 int					print_fstat_error(char *str);
 int					print_msg(char *str);
+
+uint32_t			swap_uint32(uint32_t num);
+uint64_t			swap_uint64(uint64_t num);
+uint32_t			is_swap_64_32(t_hub *hub, uint32_t ncmds);
+uint32_t			is_swap_32(t_hub *hub, uint32_t ncmds);
+uint64_t			is_swap_64_64(t_hub *hub, uint64_t ncmds);
 
 char				get_type(int n_type, int n_sect, int n_value, t_sect *sect);
 char				get_sort_opt(t_opt *opt);

@@ -6,13 +6,13 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/11 19:31:41 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/20 16:27:47 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/21 18:51:50 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <nm.h>
 
-static uint32_t	swap_uint32(uint32_t num)
+uint32_t		swap_uint32(uint32_t num)
 {
 	uint32_t	swapped;
 
@@ -21,6 +21,14 @@ static uint32_t	swap_uint32(uint32_t num)
 		((num >> 8) & 0x0000FF00) |
 		((num << 24) & 0xFF000000);
 	return (swapped);
+}
+
+uint64_t		swap_uint64(uint64_t x)
+{
+	x = (x & 0x00000000FFFFFFFF) << 32 | (x & 0xFFFFFFFF00000000) >> 32;
+	x = (x & 0x0000FFFF0000FFFF) << 16 | (x & 0xFFFF0000FFFF0000) >> 16;
+	x = (x & 0x00FF00FF00FF00FF) << 8 | (x & 0xFF00FF00FF00FF00) >> 8;
+	return (x);
 }
 
 static void		print_arch(char *bin, char *ar_name)
@@ -50,6 +58,8 @@ char			*get_cpu_type(int cpu_type)
 		return ("m88k");
 	else if (cpu_type == CPU_TYPE_I860)
 		return ("i860");
+	else if (cpu_type == CPU_TYPE_POWERPC)
+		return ("ppc");
 	else
 		return (NULL);
 }
