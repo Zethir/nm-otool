@@ -64,6 +64,14 @@ char			*get_cpu_type(int cpu_type)
 		return (NULL);
 }
 
+static uint32_t	is_swap_fat(t_hub *hub, uint32_t ncmds)
+{
+	if (hub->magic == FAT_CIGAM)
+		return (swap_uint32(ncmds));
+	else
+		return (ncmds);
+}
+
 void			handle_fat(char *file, char *bin, t_hub *hub)
 {
 	struct fat_header	*header;
@@ -74,12 +82,12 @@ void			handle_fat(char *file, char *bin, t_hub *hub)
 	header = (void *)file;
 	arch = (struct fat_arch *)(header + 1);
 	i = 0;
-	while (i < swap_uint32(header->nfat_arch))
+	while (i < is_swap_fat(hub, header->nfat_arch))
 	{
-		if ((cputype = get_cpu_type(swap_uint32(arch[i].cputype))))
+		if ((cputype = get_cpu_type(is_swap_fat(hub, arch[i].cputype))))
 		{
 			print_arch(bin, cputype);
-			check_filetype(file + swap_uint32(arch[i].offset), bin, hub);
+			check_filetype(file + is_swap_fat(hub, arch[i].offset), bin, hub);
 		}
 		i++;
 	}

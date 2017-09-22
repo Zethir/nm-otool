@@ -51,14 +51,16 @@ static void	display_section_32(struct section *sec, char *file)
 	}
 }
 
-static void	segment_32(struct segment_command *sg, char *file)
+static void	segment_32(struct segment_command *sg, char *file, t_hub *hub)
 {
 	struct section		*sec;
 	unsigned int		i;
 
 	i = 0;
 	sec = (struct section *)((void *)sg + sizeof(struct segment_command));
-	while (i < sg->nsects)
+	if ((uint32_t)sec > is_swap_32(hub, (uint32_t)hub->end))
+		print_error_file();
+	while (i < is_swap_32(hub, sg->nsects))
 	{
 		if (!ft_strcmp(sec[i].sectname, SECT_TEXT) &&
 				!ft_strcmp(sec[i].segname, SEG_TEXT))
@@ -74,7 +76,7 @@ static void	segment_32(struct segment_command *sg, char *file)
 	}
 }
 
-void		handle_32(char *file, void *end)
+void		handle_32(char *file, t_hub *hub)
 {
 	struct mach_header		*header;
 	struct load_command		*lc;
@@ -83,16 +85,13 @@ void		handle_32(char *file, void *end)
 	header = (struct mach_header *)file;
 	lc = (void *)file + sizeof(*header);
 	i = 0;
-	while (i < header->ncmds)
+	while (i < is_swap_32(hub, header->ncmds))
 	{
-		if (lc > (struct load_command *)end)
-		{
-			print_msg("The file wasn't recognized as a valid object file\n");
-			exit(-1);
-		}
-		if (lc->cmd == LC_SEGMENT)
-			segment_32((struct segment_command *)lc, file);
-		lc = (void *)lc + lc->cmdsize;
+		if ((uint32_t)lc > is_swap_32(hub, (uint32_t)hub->end))
+			print_error_file();
+		if (is_swap_32(hub, lc->cmd) == LC_SEGMENT)
+			segment_32((struct segment_command *)lc, file, hub);
+		lc = (void *)lc + is_swap_32(hub, lc->cmdsize);
 		i++;
 	}
 }

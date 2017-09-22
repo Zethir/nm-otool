@@ -12,19 +12,17 @@
 
 #include <otool.h>
 
-int				check_filetype(char *file, char *bin, void *end)
+int				check_filetype(char *file, char *bin, t_hub *hub)
 {
-	uint32_t	magic;
-
-	magic = *(int *)file;
-	if (magic == MH_MAGIC)
-		handle_32(file, end);
-	else if (magic == MH_MAGIC_64)
-		handle_64(file, end);
-	else if (magic == FAT_MAGIC || magic == FAT_CIGAM)
-		handle_fat(file, bin, end);
+	hub->magic = *(int *)file;
+	if (hub->magic == MH_MAGIC || hub->magic == MH_CIGAM)
+		handle_32(file, hub);
+	else if (hub->magic == MH_MAGIC_64 || hub->magic == MH_CIGAM_64)
+		handle_64(file, hub);
+	else if (hub->magic == FAT_MAGIC || hub->magic == FAT_CIGAM)
+		handle_fat(file, bin, hub);
 	else if (!ft_strncmp(file, ARMAG, SARMAG))
-		handle_ar(file, bin, end);
+		handle_ar(file, bin, hub);
 	else
 	{
 		return (
@@ -33,7 +31,7 @@ int				check_filetype(char *file, char *bin, void *end)
 	return (0);
 }
 
-static int		launch_otool(char *bin)
+static int		launch_otool(char *bin, t_hub *hub)
 {
 	int			fd;
 	struct stat stat;
@@ -49,30 +47,37 @@ static int		launch_otool(char *bin)
 		return (print_msg("Can't read a directory\n"));
 	if ((file = mmap(0, stat.st_size, PROT_READ, MAP_PRIVATE, fd, 0))
 			== MAP_FAILED)
-		return (print_msg("mmap() failed."));
-	if (check_filetype(file, bin, file + stat.st_size) < 0)
+		return (print_msg("Can't MMAP on this fd\n"));
+	hub->end = file + stat.st_size;
+	if (check_filetype(file, bin, hub) < 0)
 		return (-1);
 	if (munmap(file, stat.st_size) < 0)
-		return (print_msg("unmap() failed."));
+		return (print_msg("Can't MUNMAP this page\n"));
+	if (close(fd) < 0)
+		return (print_msg("Can't close this file descriptor\n"));
 	return (0);
 }
 
 int				main(int argc, char **argv)
 {
+	t_hub		*hub;
 	int		i;
 
 	i = 1;
+	if (!(hub = (t_hub *)malloc(sizeof(t_hub))))
+		return (-1);
 	if (argc == 1)
-		launch_otool("./a.out");
+		launch_otool("./a.out", hub);
 	else
 	{
 		while (argv[i])
 		{
 			print_binary(argv[i]);
-			if (launch_otool(argv[i]) < 0)
+			if (launch_otool(argv[i], hub) < 0)
 				return (-1);
 			i++;
 		}
+		free(hub);
 	}
 	return (0);
 }

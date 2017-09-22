@@ -25,19 +25,30 @@
 # include <mach-o/ranlib.h>
 # include <ar.h>
 
+typedef struct		s_hub
+{
+	void			*end;
+	uint32_t		magic;
+}					t_hub;
+
 void				print_binary(char *bin);
-void				handle_32(char *file, void *end);
-void				handle_64(char *file, void *end);
-void				handle_ar(char *file, char *bin, void *end);
-void				handle_fat(char *file, char *bin, void *end);
+void				handle_32(char *file, t_hub *hub);
+void				handle_64(char *file, t_hub *hub);
+void				handle_ar(char *file, char *bin, t_hub *hub);
+void				handle_fat(char *file, char *bin, t_hub *hub);
 void				print_obj_path(char *bin, char *ar_name);
 void				print_hexa(long long value, int len);
 void				print_2_hexa(long long value);
+void				print_error_file();
 
-int					check_filetype(char *file, char *bin, void *end);
+int					check_filetype(char *file, char *bin, t_hub *hub);
 int					nm_error_arg(char *str);
 int					print_open_error(char *str);
 int					print_fstat_error(char *str);
 int					print_msg(char *str);
+
+uint32_t			is_swap_64(t_hub *hub, uint32_t ncmds);
+uint32_t			is_swap_32(t_hub *hub, uint32_t ncmds);
+uint32_t			swap_uint32(uint32_t num);
 
 #endif

@@ -12,6 +12,12 @@
 
 #include <otool.h>
 
+void		print_error_file(void)
+{
+	print_msg("The file wasn't recognized as a valid object file\n");
+	exit(-1);
+}
+
 void		print_2_hexa(long long value)
 {
 	char	*hexa;
@@ -48,13 +54,15 @@ static void	display_section_64(struct section_64 *sec, char *file)
 	}
 }
 
-static void	segment_64(struct segment_command_64 *sg, char *file, void *end)
+static void	segment_64(struct segment_command_64 *sg, char *file, t_hub *hub)
 {
 	struct section_64	*sec;
 	unsigned int		i;
 
 	i = 0;
 	sec = (struct section_64 *)((void *)sg + sizeof(struct segment_command_64));
+	if ((uint32_t)sec > is_swap_64(hub, (uint32_t)hub->end))
+		print_error_file();
 	while (i < sg->nsects)
 	{
 		if (!ft_strcmp(sec[i].sectname, SECT_TEXT) &&
@@ -71,7 +79,7 @@ static void	segment_64(struct segment_command_64 *sg, char *file, void *end)
 	}
 }
 
-void		handle_64(char *file, void *end)
+void		handle_64(char *file, t_hub *hub)
 {
 	struct mach_header_64	*header;
 	struct load_command		*lc;
@@ -80,16 +88,13 @@ void		handle_64(char *file, void *end)
 	header = (struct mach_header_64 *)file;
 	lc = (void *)file + sizeof(*header);
 	i = 0;
-	while (i < header->ncmds)
+	while (i < is_swap_64(hub, header->ncmds))
 	{
-		if (lc > (struct load_command *)end)
-		{
-			print_msg("The file wasn't recognized as a valid object file\n");
-			exit(-1);
-		}
-		if (lc->cmd == LC_SEGMENT_64)
-			segment_64((struct segment_command_64 *)lc, file, end);
-		lc = (void *)lc + lc->cmdsize;
+		if ((uint32_t)lc > is_swap_64(hub, (uint32_t)hub->end))
+			print_error_file();
+		if (is_swap_64(hub, lc->cmd) == LC_SEGMENT_64)
+			segment_64((struct segment_command_64 *)lc, file, hub);
+		lc = (void *)lc + is_swap_64(hub, lc->cmdsize);
 		i++;
 	}
 }
