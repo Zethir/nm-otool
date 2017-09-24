@@ -6,7 +6,7 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/12 16:54:34 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/24 17:54:32 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/24 17:56:54 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void		print_2_hexa(long long value)
 	free(hexa);
 }
 
-static void	display_section_64(struct section_64 *sec, char *file)
+static void	display_section_64(struct section_64 *sec, char *file, t_hub *hub)
 {
 	size_t			j;
 	size_t			k;
@@ -42,10 +42,10 @@ static void	display_section_64(struct section_64 *sec, char *file)
 	j = 0;
 	l = 16;
 	offset = (unsigned char*)file + is_swap_64(hub, sec->offset);
-	while (j < is_swap_64(sec->size))
+	while (j < is_swap_64(hub, sec->size))
 	{
 		k = j - 1;
-		print_hexa(is_swap_64(hub, sec->addr + j,) 16);
+		print_hexa(is_swap_64(hub, sec->addr + j), 16);
 		while (++k < l && k < is_swap_64(hub, sec->size))
 			print_2_hexa(offset[k]);
 		ft_putchar('\n');
@@ -73,7 +73,7 @@ static void	segment_64(struct segment_command_64 *sg, char *file, t_hub *hub)
 			ft_putchar(',');
 			ft_putstr(SECT_TEXT);
 			ft_putstr(") section\n");
-			display_section_64(sec + i, file);
+			display_section_64(sec + i, file, hub);
 		}
 		i++;
 	}
