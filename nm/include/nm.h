@@ -6,7 +6,7 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 15:11:28 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/24 17:34:10 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/24 18:01:49 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,5 +102,6 @@ uint64_t			is_swap_64_64(t_hub *hub, uint64_t ncmds);
 char				get_type(int n_type, int n_sect, int n_value, t_sect *sect);
 char				get_sort_opt(t_opt *opt);
 char				*get_hexa(long long value, char c, int len);
+char				*get_cpu_type(int cpu_type);
 
 #endif
