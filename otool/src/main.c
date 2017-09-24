@@ -6,7 +6,7 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 15:30:07 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/17 15:46:04 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/24 17:58:05 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static int		launch_otool(char *bin, t_hub *hub)
 
 int				main(int argc, char **argv)
 {
-	t_hub		*hub;
+	t_hub	*hub;
 	int		i;
 
 	i = 1;

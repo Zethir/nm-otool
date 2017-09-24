@@ -6,7 +6,7 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/21 18:32:43 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/21 18:49:36 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/24 17:57:48 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ uint32_t	is_swap_32(t_hub *hub, uint32_t ncmds)
 		return (ncmds);
 }
 
-uint32_t		swap_uint32(uint32_t num)
+uint32_t	swap_uint32(uint32_t num)
 {
 	uint32_t			swapped;
 
