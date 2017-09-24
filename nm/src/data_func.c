@@ -6,7 +6,7 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/07 21:31:42 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/19 17:31:10 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/24 17:34:41 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,19 +47,14 @@ static void	sort_alpha(t_data **head, t_data *data)
 		data->next = tmp2;
 		return ;
 	}
-	while (tmp->next)
+	if (!ft_strcmp(data->name, tmp->name) && ft_strcmp(tmp->hexa, data->hexa))
 	{
-		if (ft_strcmp(data->name, tmp->next->name) > 0)
-			tmp = tmp->next;
-		else
-		{
-			tmp2 = tmp->next;
-			tmp->next = data;
-			data->next = tmp2;
-			return ;
-		}
+		tmp2 = tmp;
+		*head = data;
+		data->next = tmp2;
+		return ;
 	}
-	tmp->next = data;
+	sort_alpha_loop(data, tmp);
 }
 
 static void	reverse_data(t_data **head, t_data *data)
@@ -75,19 +70,14 @@ static void	reverse_data(t_data **head, t_data *data)
 		data->next = tmp2;
 		return ;
 	}
-	while (tmp->next)
+	if (!ft_strcmp(data->name, tmp->name) && ft_strcmp(data->hexa, tmp->hexa))
 	{
-		if (ft_strcmp(tmp->next->name, data->name) > 0)
-			tmp = tmp->next;
-		else
-		{
-			tmp2 = tmp->next;
-			tmp->next = data;
-			data->next = tmp2;
-			return ;
-		}
+		tmp2 = tmp;
+		*head = data;
+		data->next = tmp2;
+		return ;
 	}
-	tmp->next = data;
+	sort_reverse_loop(data, tmp);
 }
 
 void		push_data(t_data **head, t_data *data, t_opt *opt)

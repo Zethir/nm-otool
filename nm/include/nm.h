@@ -6,7 +6,7 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 15:11:28 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/21 18:50:11 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/24 17:34:10 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,8 @@ void				handle_fat(char *file, char *bin, t_hub *hub);
 void				print_data(t_data *data, t_opt *opt);
 void				print_obj_path(char *bin, char *ar_name);
 void				print_error_file(void);
+void				sort_alpha_loop(t_data *data, t_data *tmp);
+void				sort_reverse_loop(t_data *data, t_data *tmp);
 
 int					check_filetype(char *file, char *bin, t_hub *hub);
 int					nm_error_arg(char *str);
