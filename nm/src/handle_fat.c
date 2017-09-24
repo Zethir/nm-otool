@@ -6,7 +6,7 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/11 19:31:41 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/21 18:51:50 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/24 14:13:04 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,6 @@ char			*get_cpu_type(int cpu_type)
 		return ("m68k");
 	else if (cpu_type == CPU_TYPE_I386)
 		return ("i386");
-	else if (cpu_type == CPU_TYPE_X86)
-		return ("x86");
 	else if (cpu_type == CPU_TYPE_X86_64)
 		return ("x86_64");
 	else if (cpu_type == CPU_TYPE_ARM)
@@ -78,6 +76,7 @@ void			handle_fat(char *file, char *bin, t_hub *hub)
 	struct fat_arch		*arch;
 	char				*cputype;
 	uint32_t			i;
+	int					magic;
 
 	header = (void *)file;
 	arch = (struct fat_arch *)(header + 1);
@@ -87,7 +86,9 @@ void			handle_fat(char *file, char *bin, t_hub *hub)
 		if ((cputype = get_cpu_type(is_swap_fat(hub, arch[i].cputype))))
 		{
 			print_arch(bin, cputype);
+			magic = hub->magic;
 			check_filetype(file + is_swap_fat(hub, arch[i].offset), bin, hub);
+			hub->magic = magic;
 		}
 		i++;
 	}
