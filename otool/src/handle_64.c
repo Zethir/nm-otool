@@ -6,7 +6,7 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/12 16:54:34 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/24 17:56:54 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/24 18:25:50 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,12 @@ static void	display_section_64(struct section_64 *sec, char *file, t_hub *hub)
 
 	j = 0;
 	l = 16;
-	offset = (unsigned char*)file + is_swap_64(hub, sec->offset);
-	while (j < is_swap_64(hub, sec->size))
+	offset = (unsigned char*)file + is_swap_64_32(hub, sec->offset);
+	while (j < is_swap_64_64(hub, sec->size))
 	{
 		k = j - 1;
-		print_hexa(is_swap_64(hub, sec->addr + j), 16);
-		while (++k < l && k < is_swap_64(hub, sec->size))
+		print_hexa(is_swap_64_64(hub, sec->addr + j), 16);
+		while (++k < l && k < is_swap_64_64(hub, sec->size))
 			print_2_hexa(offset[k]);
 		ft_putchar('\n');
 		j += 16;
@@ -61,7 +61,7 @@ static void	segment_64(struct segment_command_64 *sg, char *file, t_hub *hub)
 
 	i = 0;
 	sec = (struct section_64 *)((void *)sg + sizeof(struct segment_command_64));
-	if ((uint32_t)sec > is_swap_64(hub, (uint32_t)hub->end))
+	if ((uint32_t)sec > is_swap_64_32(hub, (uint32_t)hub->end))
 		print_error_file();
 	while (i < sg->nsects)
 	{
@@ -88,13 +88,13 @@ void		handle_64(char *file, t_hub *hub)
 	header = (struct mach_header_64 *)file;
 	lc = (void *)file + sizeof(*header);
 	i = 0;
-	while (i < is_swap_64(hub, header->ncmds))
+	while (i < is_swap_64_32(hub, header->ncmds))
 	{
-		if ((uint32_t)lc > is_swap_64(hub, (uint32_t)hub->end))
+		if ((uint32_t)lc > is_swap_64_32(hub, (uint32_t)hub->end))
 			print_error_file();
-		if (is_swap_64(hub, lc->cmd) == LC_SEGMENT_64)
+		if (is_swap_64_32(hub, lc->cmd) == LC_SEGMENT_64)
 			segment_64((struct segment_command_64 *)lc, file, hub);
-		lc = (void *)lc + is_swap_64(hub, lc->cmdsize);
+		lc = (void *)lc + is_swap_64_32(hub, lc->cmdsize);
 		i++;
 	}
 }

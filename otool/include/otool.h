@@ -6,7 +6,7 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/06 15:11:28 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/17 15:49:00 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/24 18:22:54 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,10 @@ int					print_open_error(char *str);
 int					print_fstat_error(char *str);
 int					print_msg(char *str);
 
-uint32_t			is_swap_64(t_hub *hub, uint32_t ncmds);
 uint32_t			is_swap_32(t_hub *hub, uint32_t ncmds);
+uint32_t			is_swap_64_32(t_hub *hub, uint32_t ncmds);
+uint64_t			is_swap_64_64(t_hub *hub, uint64_t ncmds);
 uint32_t			swap_uint32(uint32_t num);
+uint64_t			swap_uint64(uint64_t num);
 
 #endif
