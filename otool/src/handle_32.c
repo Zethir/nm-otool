@@ -6,7 +6,7 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/07 20:16:07 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/17 15:53:38 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/24 17:54:03 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void		print_hexa(long long value, int len)
 	free(hexa);
 }
 
-static void	display_section_32(struct section *sec, char *file)
+static void	display_section_32(struct section *sec, char *file, t_hub *hub)
 {
 	size_t			j;
 	size_t			k;
@@ -38,12 +38,12 @@ static void	display_section_32(struct section *sec, char *file)
 
 	j = 0;
 	l = 16;
-	offset = (unsigned char*)file + sec->offset;
-	while (j < sec->size)
+	offset = (unsigned char*)file + is_swap_32(hub, sec->offset);
+	while (j < is_swap_32(hub, sec->size))
 	{
 		k = j - 1;
-		print_hexa(sec->addr + j, 8);
-		while (++k < l && k < sec->size)
+		print_hexa(is_swap_32(hub, sec->addr + j), 8);
+		while (++k < l && k < is_swap_32(hub, sec->size))
 			print_2_hexa(offset[k]);
 		ft_putchar('\n');
 		j += 16;
@@ -70,7 +70,7 @@ static void	segment_32(struct segment_command *sg, char *file, t_hub *hub)
 			ft_putchar(',');
 			ft_putstr(SECT_TEXT);
 			ft_putstr(") section\n");
-			display_section_32(sec + i, file);
+			display_section_32(sec + i, file, hub);
 		}
 		i++;
 	}

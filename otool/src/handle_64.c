@@ -6,7 +6,7 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/12 16:54:34 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/19 19:30:46 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/24 17:54:32 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,12 @@ static void	display_section_64(struct section_64 *sec, char *file)
 
 	j = 0;
 	l = 16;
-	offset = (unsigned char*)file + sec->offset;
-	while (j < sec->size)
+	offset = (unsigned char*)file + is_swap_64(hub, sec->offset);
+	while (j < is_swap_64(sec->size))
 	{
 		k = j - 1;
-		print_hexa(sec->addr + j, 16);
-		while (++k < l && k < sec->size)
+		print_hexa(is_swap_64(hub, sec->addr + j,) 16);
+		while (++k < l && k < is_swap_64(hub, sec->size))
 			print_2_hexa(offset[k]);
 		ft_putchar('\n');
 		j += 16;
