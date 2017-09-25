@@ -6,7 +6,7 @@
 /*   By: cboussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/21 18:32:43 by cboussau          #+#    #+#             */
-/*   Updated: 2017/09/24 18:22:38 by cboussau         ###   ########.fr       */
+/*   Updated: 2017/09/25 14:12:11 by cboussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ uint32_t	swap_uint32(uint32_t num)
 	return (swapped);
 }
 
-uint64_t		swap_uint64(uint64_t x)
+uint64_t	swap_uint64(uint64_t x)
 {
 	x = (x & 0x00000000FFFFFFFF) << 32 | (x & 0xFFFFFFFF00000000) >> 32;
 	x = (x & 0x0000FFFF0000FFFF) << 16 | (x & 0xFFFF0000FFFF0000) >> 16;
